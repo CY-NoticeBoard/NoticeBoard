@@ -1,9 +1,10 @@
+package Interfaces;
+
 import java.io.IOException;
 
 /**
- * Created by allen7593 on 2016/5/9.
+ * Created by allen7593 on 2016/5/10.
  */
-public interface RabbitMQ {
+public interface RabbitMQSender {
     void send(String header, String message) throws IOException;
-    String recv();
 }
