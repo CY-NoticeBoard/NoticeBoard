@@ -11,6 +11,7 @@
     <modules>
         <module>Main</module>
         <module>RabbitMQ</module>
+        <module>Utility</module>
     </modules>
     <properties>
         <exec.version>1.2.1</exec.version>

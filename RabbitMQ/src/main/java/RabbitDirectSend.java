@@ -1,6 +1,5 @@
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
+import Interfaces.RabbitMQSender;
+import com.rabbitmq.client.*;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -9,15 +8,15 @@ import java.util.concurrent.TimeoutException;
 /**
  * Created by allen7593 on 2016/5/9.
  */
-public class RabbitDirect implements RabbitMQ{
+public class RabbitDirectSend implements RabbitMQSender {
     private ConnectionFactory factory;
     private Connection connection;
     private Channel channel;
-    private static RabbitDirect instance;
+    private static RabbitDirectSend instance;
     private String queueName = "DirectMessage";
     private String host = "localhost";
 
-    private RabbitDirect(String host, String queueName) throws java.io.IOException, TimeoutException {
+    private RabbitDirectSend(String host, String queueName) throws java.io.IOException, TimeoutException {
         factory = new ConnectionFactory();
         if (host != null && host.length() > 0) {
             this.host = host;
@@ -31,11 +30,11 @@ public class RabbitDirect implements RabbitMQ{
         channel.queueDeclare(queueName,false,false,false,null);
     }
 
-    public static RabbitDirect getInstance(String host, String queueName) throws IOException, TimeoutException {
+    public static RabbitDirectSend getInstance(String host, String queueName) throws IOException, TimeoutException {
         if (instance != null){
             return instance;
         }
-        return new RabbitDirect(host,queueName);
+        return new RabbitDirectSend(host,queueName);
     }
 
     public void send(String header,String message) throws IOException {
@@ -45,13 +44,8 @@ public class RabbitDirect implements RabbitMQ{
         }
     }
 
-    public String recv(){
-        String message = null;
-
-        return message;
-    }
-
-    public void closeConnection(){
-
+    public void closeConnection() throws IOException, TimeoutException {
+        channel.close();
+        connection.close();
     }
 }
